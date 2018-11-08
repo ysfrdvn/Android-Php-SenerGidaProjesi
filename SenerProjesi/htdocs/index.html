@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://getbootstrap.com/docs/4.1/examples/checkout/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://getbootstrap.com/favicon.ico">
+	 <link href="css/bootstrap.min.css" rel="stylesheet">
+	 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+    <!-- Custom styles for this template -->
+   
+<link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="form-validation.css" rel="stylesheet">
+<!------ Include the above in your HEAD tag ---------->
+
+
+    <title>Checkout example for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="form-validation.css" rel="stylesheet">
+	<script type="text/javascript">
+		
+		function table(getTable){
+		$("#mytable td").remove(); 
+		
+			var result;
+			var temp=getTable;
+			if(getTable=="paketlenen") getTable="uretilen";
+		$.ajax({
+        url: "deneme.php",
+        type: "post",
+        data: {request:"getTable",table:getTable},
+        success: function (response) {
+			result=JSON.parse(response.toString());
+			console.log(result[0].id);
+			var e = document.getElementById("tablo");
+			var strUser = e.options[e.selectedIndex].value;
+			for (var i = 0; i < result.length; i++) {
+				if(temp=="paketlenen"){
+					if(result[i].isCorrect=="1"){
+					$("table tbody").append("<tr><td>"+result[i].id+"</td><td>"+result[i].name+"</td><td>"+result[i].count+"</td><td>"+result[i].produced+"</td><td>"+result[i].barcode+"</td><td><button id="+result[i].id+" onClick="+'"deletee(this.id)"'+" class="+'"btn btn-danger btn-xs"'+" ><span class="+'"glyphicon glyphicon-trash"'+"></span></button></td></tr>");
+					}
+				}
+				else
+				$("table tbody").append("<tr><td>"+result[i].id+"</td><td>"+result[i].name+"</td><td>"+result[i].count+"</td><td>"+result[i].produced+"</td><td>"+result[i].barcode+"</td><td><button id="+result[i].id+" onClick="+'"deletee(this.id)"'+" class="+'"btn btn-danger btn-xs"'+" ><span class="+'"glyphicon glyphicon-trash"'+"></span></button></td></tr>");
+				
+			}
+  
+ 
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+           console.log(textStatus, errorThrown);
+        }
+		
+			
+ 
+    });
+	
+		
+	};
+			
+
+     function deletee (gelenid){
+  
+     
+		var e = document.getElementById("tablo");
+		var strUser = e.options[e.selectedIndex].value.toString();
+		if(strUser=="paketlenen"){
+			$.ajax({
+        url: "deneme.php",
+        type: "post",
+        data: { id:gelenid,request:"delete",table:"uretilen"},
+        success: function (response) {
+                       
+ 
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+           console.log(textStatus, errorThrown);
+        }
+ 
+ 
+    });
+		}else{		
+	
+	$.ajax({
+        url: "deneme.php",
+        type: "post",
+        data: { id:gelenid,request:"delete",table:strUser},
+        success: function (response) {
+                       
+ 
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+           console.log(textStatus, errorThrown);
+        }
+ 
+ 
+    });
+		
+	 }
+	 $("#mytable td").remove(); 
+		table(document.getElementById('tablo').value);
+	 }
+   
+
+	</script
+  </head>
+
+  <body class="bg-light">
+
+    <div class="container">
+      <div class="py-5 text-center">
+	   
+	  <!-- Buraya resim koyabilirsin-->
+        <img class="d-block mx-auto mb-4" src="bootstrap-solid.svg" alt="" width="72" height="72">
+		<h4 class="mb-3">ŞENER GIDA</h4>
+       </div>
+
+      <div class="row">
+        
+        <div class="col-md-12 order-md-1">
+         
+          <form action="deneme.php" method="post" class="needs-validation" >
+			<input type="text" id="request" name="request" hidden value="insert">
+            <div class="row">
+             
+             
+            </div>
+		<div class="row">
+              <div class="col-md-5 mb-3">
+                <label for="country">DEPARTMAN</label>
+                <select class="custom-select d-block w-100" id="table" name="table" required="">
+                  <option value="lokum">LOKUM</option>
+				  <option value="recel">REÇEL</option>
+				  <option value="helva">HELVA</option>
+				  <option value="pekmez">PEKMEZ</option>
+				  <option value="cikolata">ÇİKOLATA</option>
+				  <option value="akide">AKİDE ŞEKERİ</option>                 
+                </select>
+               
+              </div>
+			  <div class="col-md-3 mb-3">
+                <label for="zip">Ürün Adı</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="" required="">
+                
+              </div>
+               <div class="col-md-3 mb-3">
+                <label for="zip">İSTENİLEN ADET</label>
+                <input type="text" class="form-control" id="count" name="count" placeholder="" required="">
+                
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="zip">BARCODE</label>
+                <input type="text" class="form-control" id="barcode" name="barcode" placeholder="" required="">
+                
+              </div>
+            </div>
+			<hr class="mb-4">
+            <button class="btn btn-primary btn-lg btn-block" type="submit">İSTEĞİ ONAYLA</button>
+          </form>
+        </div>
+      </div>
+	  <hr>
+	  <div >
+	  <h4>Ürünler Tablosu</h4>
+	   <div >
+                <label for="country">DEPARTMAN</label>
+                <select class="custom-select d-block w-100" id="tablo" name="tablo"  onChange="table(this.value);"required="">
+				<option>Lütfen Seçim Yapınız</option>
+                  <option value="lokum">LOKUM</option>
+				  <option value="recel">REÇEL</option>
+				  <option value="helva">HELVA</option>
+				  <option value="pekmez">PEKMEZ</option>
+				  <option value="cikolata">ÇİKOLATA</option>
+				  <option value="akide">AKİDE ŞEKERİ</option>
+				<option value="uretilen">ÜRETİLEN ÜRÜNLER</option>	
+				<option value="paketlenen">PAKETLENEN ÜRÜNLER</option>					
+                </select>
+               
+              </div>
+	<div class="row">
+		
+        
+        <div class="col-md-12">
+        
+        <div class="table-responsive">
+
+                
+              <table id="mytable" class="table table-bordred table-striped">
+                   
+                   <thead>
+                   <th> ID</th>
+				   <th> Ürün Adı</th>
+                    <th>İstenilen Adet</th>
+                     <th>Üretilen Adet</th>
+                     <th>Barcode</th>         
+                       <th>Delete</th>
+                   </thead>
+    <tbody id="tbdy">
+    
+    <tr>
+	
+<!--<td id="id" name="id">id</td>
+    <td>Mohsin</td>
+    <td>Irshad</td>
+    <td>CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan</td>
+    <td>isometric.mohsin@gmail.com</td>
+   
+   <td><p data-placement="top" data-toggle="tooltip" title="delete"><button class="btn btn-danger btn-xs"  onClick="deletee(1)" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+    -->
+    </tr>
+    
+   
+    
+   
+    
+    </tbody>
+        
+</table>
+
+
+
+
+    
+    
+    
+   
+
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">© 2018-2019 ŞENER GIDA</p>
+       
+      </footer>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+      
+    <script src="popper.min.js.indir"></script>
+    <script src="bootstrap.min.js.indir"></script>
+    <script src="holder.min.js.indir"></script>
+
+  
+
+</body></html>
